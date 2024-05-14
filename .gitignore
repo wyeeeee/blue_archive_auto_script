@@ -18,6 +18,8 @@
 !img.png
 !installer.py
 !main.py
+!electron_gui
+!server
 !minitouch.py
 !requirements.txt
 !ui.png
