@@ -50,7 +50,7 @@
               </v-list>
           </template>
       </v-navigation-drawer>
-      <v-expansion-panels>
+      <v-expansion-panels v-if="false">
         <v-expansion-panel>
         
         <v-expansion-panel-title>thik<br>sd</v-expansion-panel-title>

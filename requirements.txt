@@ -11,5 +11,6 @@ uiautomator2
 opencv-python
 PyQt-Fluent-Widgets
 # gevent
-
+fastapi
 paddlepaddle
+aiofiles
