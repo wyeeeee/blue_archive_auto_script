@@ -8,3 +8,5 @@ body {
   background-size: cover;
   user-select: none;
 }
+
+::-webkit-scrollbar { display: none; }
