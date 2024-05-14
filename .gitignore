@@ -24,6 +24,7 @@
 !requirements.txt
 !ui.png
 !window.py
+!server.py
 !window.spec
 src/explore_task_data/__pycache__/normal_task_11.cpython-39.pyc
 *.pyc

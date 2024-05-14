@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 import json
-from electronGUI.baas_server.internal.config_set import get_config as get
+from server.internal.config_set import get_config as get
 router = APIRouter(
     prefix="/get-config",
     tags=["config"],

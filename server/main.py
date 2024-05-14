@@ -1,5 +1,5 @@
 from fastapi import Depends, FastAPI
-from electronGUI.baas_server.routers import config
+from server.routers import config
 app = FastAPI()
 app.include_router(config.router)
 @app.get("/")
