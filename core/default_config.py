@@ -546,7 +546,7 @@ STATIC_DEFAULT_CONFIG = '''
           ]
     },
     "current_game_activity": {
-        "CN": "anUnconcealedHeart",
+        "CN": null,
         "Global": null,
         "JP": "iveAlive"
     },
