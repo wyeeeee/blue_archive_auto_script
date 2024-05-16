@@ -32,7 +32,7 @@
   const shows= ref(false)
   const barIcon= ref("mdi-chevron-down")
 
-alert(await window.api.example.hello(1,2)) 
+
 function setWin(state){
   if(state=="min"){
       window.setWin.min()
