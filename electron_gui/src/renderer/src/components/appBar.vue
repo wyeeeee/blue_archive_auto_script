@@ -9,9 +9,9 @@
 
 
     <v-app-bar-nav-icon class="noDrag" :icon="barIcon" @click="change"></v-app-bar-nav-icon>
-    <v-app-bar-nav-icon class="noDrag" icon="mdi-window-minimize" ></v-app-bar-nav-icon>
-    <v-app-bar-nav-icon class="noDrag" icon="mdi-fullscreen"></v-app-bar-nav-icon>
-    <v-app-bar-nav-icon class="noDrag" icon="mdi-close"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon class="noDrag" icon="mdi-window-minimize" @click="setWin('min')"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon class="noDrag" icon="mdi-fullscreen"  @click="setWin('max')"></v-app-bar-nav-icon>
+    <v-app-bar-nav-icon class="noDrag" icon="mdi-close"  @click="setWin('close')"></v-app-bar-nav-icon>
 
     <template v-slot:extension v-if="shows ">
         <v-tabs
@@ -29,11 +29,19 @@
 
 <script setup>
   import { ref } from 'vue'
-
   const shows= ref(false)
   const barIcon= ref("mdi-chevron-down")
 
-
+alert(await window.api.example.hello(1,2)) 
+function setWin(state){
+  if(state=="min"){
+      window.setWin.min()
+  }else if(state=="max"){
+      window.setWin.max()
+  }else if(state=="close"){
+      window.setWin.close()
+  }
+}
   function change(e){
       shows.value=!shows.value
       if(barIcon.value=="mdi-chevron-down"){

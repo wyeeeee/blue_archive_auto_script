@@ -2,7 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
-
+import {services,makeChannelName} from './services.js'
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -19,6 +19,17 @@ function createWindow() {
       sandbox: false
     }
   })
+
+  ipcMain.on('min', () => mainWindow.minimize());
+  ipcMain.on('max', () => {
+      if (mainWindow.isMaximized()) {
+          mainWindow.restore();
+      } else {
+          mainWindow.maximize()
+      }
+   
+  });
+  ipcMain.on('close', () => mainWindow.close());
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
@@ -80,5 +91,10 @@ app.on('window-all-closed', () => {
   }
 })
 
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
+services.forEach((service) => {
+  Object.entries(service.fns).forEach(([apiName, apiFn]) => {
+    ipcMain.handle(makeChannelName(service.name, apiName), (ev, ...args) =>
+      apiFn(...args)
+    );
+  });
+});
