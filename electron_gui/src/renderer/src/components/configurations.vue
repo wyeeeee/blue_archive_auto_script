@@ -15,6 +15,7 @@ switchConfigs.value=JSON.parse(await window.api.config.getConfig('default_config
             :subtitle="switchConfig.tip"
             variant="text"
             height="70"
+            width="600"
           >
             <template v-slot:title>
               <span class="font-weight-black">{{switchConfig.name}}</span>
