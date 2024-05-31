@@ -1,9 +1,11 @@
+from datetime import datetime
 import cv2
 from core.exception import ScriptError
 from core.notification import notify
 from core.scheduler import Scheduler
 from core import position, picture
 from core.utils import Logger
+
 from core.pushkit import push
 import time
 import numpy as np
@@ -11,12 +13,12 @@ import uiautomator2 as u2
 import module
 import threading
 import json
-from multiprocessing import process
 import subprocess
 import psutil
 import os
 import win32com.client
 import time
+import device_operation
 from typing import Tuple
 
 func_dict = {
@@ -49,11 +51,13 @@ func_dict = {
     'explore_activity_story': module.explore_activity_story.implement,
     'explore_activity_challenge': module.explore_activity_challenge.implement,
     'explore_activity_mission': module.explore_activity_mission.implement,
+    'dailyGameActivity': module.dailyGameActivity.implement,
 }
 
 
 class Baas_thread:
     def __init__(self, config, logger_signal=None, button_signal=None, update_signal=None):
+        self.dailyGameActivity = None
         self.activity_name = None
         self.config_set = config
         self.process_name = None
@@ -207,32 +211,47 @@ class Baas_thread:
             self.logger.error(e)
             return False
 
-    def subprocess_run(self, cmd: Tuple[str], isasync=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding = "utf-8"):
+    def subprocess_run(self, cmd: Tuple[str], isasync=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                       encoding="utf-8"):
         # 代码来源BAAH
         if isasync:
-        # 异步非阻塞执行
+            # 异步非阻塞执行
             return subprocess.Popen(cmd, stdout=stdout, stderr=stderr, encoding=encoding)
         else:
-        # 同步阻塞执行
+            # 同步阻塞执行
             return subprocess.run(cmd, stdout=stdout, stderr=stderr, encoding=encoding)
 
     def start_check_emulator_stat(self, emulator_strat_stat, wait_time):
         if emulator_strat_stat:
-            if wait_time < 20:
-                self.logger.warning("Wait time is too short, auto set to 20 seconds.")
-                wait_time = 20
-            self.lnk_path = self.config.get("program_address")
-            self.convert_lnk_to_exe(self.lnk_path)
-            self.file_path = self.config.get("program_address")
-            self.process_name = self.extract_filename_and_extension(self.file_path)
-            if not self.config.get("multi_emulator_check"):
+            self.logger.info(f"-- BAAS Check Emulator Start --")
+            if self.config['emulatorIsMultiInstance']:
+                name = self.config.get("multiEmulatorName")
+                num = self.config.get("emulatorMultiInstanceNumber")
+                self.logger.info(f"-- Start Multi Emulator --")
+                self.logger.info(f"EmulatorName: {name}")
+                self.logger.info(f"MultiInstanceNumber: {num}")
+                device_operation.start_simulator_classic(name, num)
+                self.logger.info(f" Start wait {wait_time} seconds for emulator to start. ")
+                while self.flag_run:
+                    time.sleep(0.01)
+                    wait_time -= 0.01
+                    if wait_time <= 0:
+                        break
+                else:
+                    return False
+                return True
+            else:
+                self.lnk_path = self.config.get("program_address")
+                self.convert_lnk_to_exe(self.lnk_path)
+                self.file_path = self.config.get("program_address")
+                self.process_name = self.extract_filename_and_extension(self.file_path)
                 if self.check_process_running(self.process_name):
-                    self.logger.info(f"模拟器进程 {self.process_name} 正在运行.")
+                    self.logger.info(f"-- Emulator Process {self.process_name} is running --")
                     return True
                 else:
-                    self.logger.info(f"模拟器进程 {self.process_name} 未运行，开始启动模拟器")
+                    self.logger.warning(f"-- Emulator Process {self.process_name} is not running, start Emulator --")
                     subprocess.Popen(self.file_path)
-                    self.logger.info(f"等待模拟器启动时间 {wait_time} 秒")
+                    self.logger.info(f" Start wait {wait_time} seconds for emulator to start. ")
                     while self.flag_run:
                         time.sleep(0.01)
                         wait_time -= 0.01
@@ -241,37 +260,17 @@ class Baas_thread:
                     else:
                         return False
                     if self.check_process_running(self.process_name):
-                        self.logger.info(f"模拟器进程 {self.process_name} 启动成功.")
+                        self.logger.info(f"Emulator Process {self.process_name} started SUCCESSFULLY")
                         return True
                     else:
-                        self.logger.info(f"模拟器进程 {self.process_name} 启动失败.")
+                        self.logger.warning(f"Emulator Process {self.process_name} start FAIL")
                     return False
-            else:
-                self.logger.info("多开模拟器进程.")
-                emulator_process = self.subprocess_run(self.config.get("program_address").split(" "), isasync=True)
-                self.logger.info("模拟器pid: "+str(emulator_process.pid))
-                time.sleep(10)
-                # 检查pid是否存在
-                if not self.check_process_running_from_pid(emulator_process.pid):
-                    self.logger.error("模拟器启动失败")
-                    return False
-                else:
-                    self.logger.critical("模拟器启动成功")
-                    self.logger.info(f"等待模拟器启动时间 {wait_time} 秒")
-                    while self.flag_run:
-                        time.sleep(0.01)
-                        wait_time -= 0.01
-                        if wait_time <= 0:
-                            break
-                    return True
-        else:
-            self.logger.info("无需启动模拟器进程.")
-            return True
+        return True
 
     def start_emulator(self):
         self.emulator_strat_stat = self.config.get("open_emulator_stat")
         self.wait_time = self.config.get("emulator_wait_time")
-        if not self.start_check_emulator_stat(self.emulator_strat_stat,self.wait_time):
+        if not self.start_check_emulator_stat(self.emulator_strat_stat, self.wait_time):
             raise Exception("Emulator start failed")
 
     def _init_emulator(self) -> bool:
@@ -321,31 +320,34 @@ class Baas_thread:
         elif msg == "solve":
             return self.solve(task)
 
-    def get_enable(self, activity):
-        events = json.load(open('config/event.json', 'r', encoding='utf-8'))
-        for event in events:
-            if event['func_name'] == activity:
-                return event['enabled']
-        return False
-
     def thread_starter(self):
         try:
             self.logger.info("-------------- Start Scheduler ----------------")
             while self.flag_run:
                 if self.first_start:
                     self.solve('restart')
-                next_func_name = self.scheduler.heartbeat()
-                self.next_time = 0
-                if next_func_name:
+                nextTask = self.scheduler.heartbeat()
+                if nextTask:
+                    self.task_finish_to_main_page = True
+                    self.daily_config_refresh()
                     if time.time() - self.last_refresh_u2_time > 10800:
                         self.solve('refresh_uiautomator2')
-                    self.logger.info(f"Scheduler :  -- {next_func_name} --")
-                    self.task_finish_to_main_page = True
-                    if self.solve(next_func_name) and self.flag_run:
-                        next_tick = self.scheduler.systole(next_func_name, self.next_time, self.server)
-                        self.logger.info(str(next_func_name) + " next_time : " + str(next_tick))
+                    self.genScheduleLog(nextTask)
+                    for task in nextTask['pre_task']:
+                        self.logger.info("pre_task: [ " + task + " ] start")
+                        self.solve(task)
+                    self.logger.info("current_task: [ " + nextTask['current_task'] + " ] start")
+                    self.next_time = 0
+                    self.solve(nextTask['current_task'])
+                    currentTaskNextTime = self.next_time
+                    for task in nextTask['post_task']:
+                        self.logger.info("post_task: [ " + task + " ] start")
+                        self.solve(task)
+                    if self.flag_run:
+                        next_tick = self.scheduler.systole(nextTask['current_task'], currentTaskNextTime)
+                        self.logger.info(nextTask['current_task'] + " next_time : " + str(next_tick))
                     elif not self.flag_run:
-                        self.logger.info("user stop")
+                        self.logger.info("BAAS Exited, Reason : Human Take Over")
                         self.signal_stop()
                     else:
                         self.logger.error("error occurred, stop all activities")
@@ -353,27 +355,35 @@ class Baas_thread:
                 else:
                     if self.task_finish_to_main_page:
                         self.logger.info("all activities finished, return to main page")
-                        push(self.logger,self.config)
+                        push(self.logger, self.config)
                         self.quick_method_to_main_page()
                         self.task_finish_to_main_page = False
+                    self.scheduler.update_valid_task_queue()
                     time.sleep(1)
         except Exception as e:
             notify(title='', body='任务已停止')
-            self.logger.info("error occurred, stop all activities")
             self.logger.error(e)
+            self.logger.error("error occurred, stop all activities")
             self.signal_stop()
+
+    def genScheduleLog(self, task):
+        self.logger.info("Scheduler : {")
+        self.logger.info("            pre_task         : " + str(task["pre_task"]))
+        self.logger.info("            current_task     : " + str(task["current_task"]))
+        self.logger.info("            post_task        : " + str(task["post_task"]))
+        self.logger.info("            }")
 
     def solve(self, activity) -> bool:
         try:
             return func_dict[activity](self)
         except Exception as e:
-            if  self.flag_run:
+            if self.flag_run:
                 self.logger.error(e)
                 threading.Thread(target=self.simple_error, args=(e.__str__(),)).start()
             return False
 
     def simple_error(self, info: str):
-        push(self.logger,self.config,info)
+        push(self.logger, self.config, info)
         raise ScriptError(message=info, context=self)
 
     def quick_method_to_main_page(self, skip_first_screenshot=False):
@@ -426,6 +436,7 @@ class Baas_thread:
             'plot_skip-plot-notice': (770, 519),
             'activity_fight-success-confirm': (640, 663),
             "total_assault_reach-season-highest-record": (640, 528),
+            "total_assault_total-assault-info": (1165, 107),
         }
         update = {
             'CN': {
@@ -499,6 +510,7 @@ class Baas_thread:
         self.package_name = self.static_config['package_name'][server]
         self.activity_name = self.static_config['activity_name'][server]
         self.current_game_activity = self.static_config['current_game_activity'][self.server]
+        self.dailyGameActivity = self.static_config['dailyGameActivity'][self.server]
         self.logger.info("Current Server: " + self.server)
 
     def swipe(self, fx, fy, tx, ty, duration=None, post_sleep_time=0):
@@ -598,7 +610,7 @@ class Baas_thread:
             return temp
 
     def init_all_data(self):
-        self.logger.info("--------Initialing All Data----------")
+        self.logger.info("--------Initializing All Data----------")
         self.flag_run = True
         self.init_config()
         self.init_server()
@@ -633,3 +645,51 @@ class Baas_thread:
             print(e)
             self.connection.uiautomator.start()
             self.wait_uiautomator_start()
+
+    def daily_config_refresh(self):
+        now = datetime.now()
+        hour = now.hour
+        last_refresh = datetime.fromtimestamp(self.config['last_refresh_config_time'])
+        last_refresh_hour = last_refresh.hour
+        daily_reset = 4 - (self.server == 'JP' or self.server == 'Global')
+        if now.day == last_refresh.day and now.year == last_refresh.year and now.month == last_refresh.month and \
+            ((hour < daily_reset and last_refresh_hour < daily_reset) or (
+                hour >= daily_reset and last_refresh_hour >= daily_reset)):
+            return
+        else:
+            self.config['last_refresh_config_time'] = time.time()
+            self.config_set.set("last_refresh_config_time", time.time())
+            self.refresh_create_time()
+            self.refresh_common_tasks()
+            self.refresh_hard_tasks()
+            self.logger.info("daily config refreshed")
+
+    def refresh_create_time(self):
+        self.config['alreadyCreateTime'] = 0
+        self.config_set.set("alreadyCreateTime", 0)
+
+    def refresh_common_tasks(self):
+        from module.normal_task import readOneNormalTask
+        temp = self.config['mainlinePriority']
+        self.config['unfinished_normal_tasks'] = []
+        if type(temp) is str:
+            temp = temp.split(',')
+        for i in range(0, len(temp)):
+            try:
+                self.config['unfinished_normal_tasks'].append(readOneNormalTask(temp[i]))
+            except Exception as e:
+                self.logger.error(e)
+        self.config_set.set("unfinished_normal_tasks", self.config['unfinished_normal_tasks'])
+
+    def refresh_hard_tasks(self):
+        from module.hard_task import readOneHardTask
+        self.config['unfinished_hard_tasks'] = []
+        temp = self.config['hardPriority']
+        if type(temp) is str:
+            temp = temp.split(',')
+        for i in range(0, len(temp)):
+            try:
+                self.config['unfinished_hard_tasks'].append(readOneHardTask(temp[i]))
+            except Exception as e:
+                self.logger.error(e)
+        self.config_set.set("unfinished_hard_tasks", self.config['unfinished_hard_tasks'])

@@ -97,7 +97,7 @@ def calc_need_fight_stage(self, region, force_sss):
         if task_state == 'no-pass':
             self.logger.info("Current task not pass. Start main line fight")
             return str(region) + "-" + str(i)
-        if task_state == 'pass' and force_sss:
+        if task_state == 'pass' and not force_sss:
             self.logger.info("Current task not sss. Start main line fight")
             return str(region) + "-" + str(i)
         if task_state == 'sss':
@@ -467,9 +467,14 @@ def to_normal_task_mission_operating_page(self, skip_first_screenshot=False):
 
 def get_explore_normal_task_missions(self, st):
     try:
-        if type(st) is not str:
+        if type(st) is list:
+            for i in range(0, len(st)):
+                st[i] = str(st[i])
+        elif type(st) is not str:
             st = str(st)
-        st = st.split(',')
+        if type(st) is str:
+            st = st.split(',')
+        print(type(st))
         tasks = []
         for i in range(0, len(st)):
             if '-' in st[i]:

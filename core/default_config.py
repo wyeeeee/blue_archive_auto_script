@@ -1,157 +1,244 @@
 EVENT_DEFAULT_CONFIG = """
-
 [
   {
     "enabled": true,
-    "priority": 0,
-    "interval": 10800,
-    "next_tick": 0,
-    "event_name": "咖啡厅",
-    "func_name": "cafe_reward"
-  },
-  {
-    "enabled": true,
-    "priority": 1,
+    "priority": -2,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
-    "event_name": "日程",
-    "func_name": "lesson"
-  },
-  {
-    "enabled": true,
-    "priority": 4,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "收集每日体力",
-    "func_name": "collect_daily_power"
-  },
-  {
-    "event_name": "收集小组体力",
-    "func_name": "group",
-    "next_tick": 0,
-    "priority": 2,
-    "enabled": true,
-    "interval": 0
-  },
-  {
-    "enabled": true,
-    "priority": 3,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "查收邮箱",
-    "func_name": "mail"
-  },
-  {
-    "enabled": true,
-    "priority": 5,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "商店购买",
-    "func_name": "common_shop"
-  },
-  {
-    "enabled": true,
-    "priority": 6,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "竞技场商店购买",
-    "func_name": "tactical_challenge_shop"
-  },
-  {
-    "enabled": true,
-    "priority": 8,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "普通关清体力",
-    "func_name": "normal_task"
-  },
-  {
-    "enabled": true,
-    "priority": 9,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "困难关清体力",
-    "func_name": "hard_task"
-  },
-  {
-    "enabled": true,
-    "priority": 11,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "每日特别委托",
-    "func_name": "clear_special_task_power"
-  },
-  {
-    "enabled": true,
-    "priority": 7,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "悬赏通缉",
-    "func_name": "rewarded_task"
+    "event_name": "凌晨四点重启",
+    "func_name": "restart",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
     "priority": -1,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
     "event_name": "竞技场",
-    "func_name": "arena"
+    "func_name": "arena",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
-    "priority": 12,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "自动制造",
-    "func_name": "create"
-  },
-  {
-    "enabled": false,
-    "priority": 13,
-    "interval": 0,
-    "next_tick": 0,
-    "event_name": "总力战",
-    "func_name": "total_assault"
-  },
-  {
-    "enabled": true,
-    "priority": 16,
+    "priority": 0,
     "interval": 10800,
+    "daily_reset": [[8, 0, 0], [20, 0, 0]],
     "next_tick": 0,
-    "event_name": "自动MomoTalk",
-    "func_name": "momo_talk"
+    "event_name": "咖啡厅",
+    "func_name": "cafe_reward",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
-    "priority": 15,
+    "priority": 1,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
-    "event_name": "收集奖励",
-    "func_name": "collect_reward"
+    "event_name": "日程",
+    "func_name": "lesson",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 2,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "收集小组体力",
+    "func_name": "group",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 3,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "查收邮箱",
+    "func_name": "mail",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 4,
+    "interval": 0,
+    "daily_reset": [[10, 0, 1], [20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "收集每日体力",
+    "func_name": "collect_daily_power",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 5,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "商店购买",
+    "func_name": "common_shop",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 6,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "竞技场商店购买",
+    "func_name": "tactical_challenge_shop",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 7,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "悬赏通缉",
+    "func_name": "rewarded_task",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 8,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "普通关清体力",
+    "func_name": "normal_task",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 9,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "困难关清体力",
+    "func_name": "hard_task",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
     "priority": 10,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
     "event_name": "学院交流会",
-    "func_name": "scrimmage"
+    "func_name": "scrimmage",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
-    "priority": -2,
+    "priority": 11,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
-    "event_name": "凌晨四点重启",
-    "func_name": "restart"
+    "event_name": "每日特别委托",
+    "func_name": "clear_special_task_power",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 12,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "自动制造",
+    "func_name": "create",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": false,
+    "priority": 13,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "总力战",
+    "func_name": "total_assault",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   },
   {
     "enabled": true,
     "priority": 14,
     "interval": 0,
+    "daily_reset": [[20, 0, 0]],
     "next_tick": 0,
     "event_name": "活动扫荡",
-    "func_name": "activity_sweep"
+    "func_name": "activity_sweep",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 15,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "收集奖励",
+    "func_name": "collect_reward",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 16,
+    "interval": 10800,
+    "daily_reset": [],
+    "next_tick": 0,
+    "event_name": "自动MomoTalk",
+    "func_name": "momo_talk",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
+  },
+  {
+    "enabled": true,
+    "priority": 17,
+    "interval": 0,
+    "daily_reset": [[20, 0, 0]],
+    "next_tick": 0,
+    "event_name": "日常小游戏",
+    "func_name": "dailyGameActivity",
+    "disabled_time_range": [],
+    "pre_task": [],
+    "post_task": []
   }
 ]
 """
@@ -191,11 +278,13 @@ DEFAULT_CONFIG = """
     "createPriority": "花>Mo>情人节>果冻>色彩>灿烂>光芒>玲珑>白金>黄金>铜>白银>金属>隐然",
     "use_acceleration_ticket": false,
     "createTime": "3",
-    "createTimeLastRefreshTime": "0",
+    "last_refresh_config_time": "0",
     "alreadyCreateTime": "0",
     "totalForceFightDifficulty": "NORMAL",
     "hardPriority": "1-1-1",
+    "unfinished_hard_tasks": [],
     "mainlinePriority": "5-1-1",
+    "unfinished_normal_tasks": [],
     "explore_normal_task_force_each_fight" : false,
     "main_story_regions": "",
     "rewarded_task_times": "2,2,2",
@@ -250,6 +339,9 @@ DEFAULT_CONFIG = """
 
     ],
     "explore_hard_task_list": "此处填写需要推图的关卡",
+    "emulatorIsMultiInstance": false,
+    "emulatorMultiInstanceNumber": 0,
+    "multiEmulatorName": "mumu",
     "manual_boss": false,
     "explore_normal_task_force_sss": true,
     "burst1": "1",
@@ -308,13 +400,6 @@ DEFAULT_CONFIG = """
 
 SWITCH_DEFAULT_CONFIG = '''
 [
-    {
-        "config": "featureSwitch",
-        "name": "功能开关",
-        "sort": 0,
-        "tip": "重要，此处为功能开关，控制各功能是否开启，启动前请检查是否开启。",
-        "type": "SwitchSettingCard"
-    },
     {
         "config": "cafeInvite",
         "name": "咖啡厅",
@@ -546,9 +631,14 @@ STATIC_DEFAULT_CONFIG = '''
           ]
     },
     "current_game_activity": {
-        "CN": null,
+        "CN": "AbydosResortRestorationCommittee",
         "Global": null,
-        "JP": "iveAlive"
+        "JP": null
+    },
+    "dailyGameActivity": {
+        "CN": "serikaSummerRamenStall",
+        "Global": null,
+        "JP": null
     },
     "package_name": {
         "官服": "com.RoamingStar.BlueArchive",
@@ -596,7 +686,31 @@ STATIC_DEFAULT_CONFIG = '''
     ],
   "student_names": [
     {
-      "CN_name": "アイリ(バンド)",
+      "CN_name": "绿(女仆)",
+      "CN_implementation": false,
+      "Global_name": "Midori (Maid)",
+      "Global_implementation": false,
+      "JP_name": "ミドリ(メイド)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "桃井(女仆)",
+      "CN_implementation": false,
+      "Global_name": "Momoi (Maid)",
+      "Global_implementation": false,
+      "JP_name": "モモイ(メイド)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "绮罗罗",
+      "CN_implementation": false,
+      "Global_name": "Kirara",
+      "Global_implementation": false,
+      "JP_name": "キララ",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "爱莉(乐队)",
       "CN_implementation": false,
       "Global_name": "Airi (Band)",
       "Global_implementation": false,
@@ -604,7 +718,7 @@ STATIC_DEFAULT_CONFIG = '''
       "JP_implementation": true
     },
     {
-      "CN_name": "ヨシミ(バンド)",
+      "CN_name": "好美(乐队)",
       "CN_implementation": false,
       "Global_name": "Yoshimi (Band)",
       "Global_implementation": false,
@@ -612,7 +726,7 @@ STATIC_DEFAULT_CONFIG = '''
       "JP_implementation": true
     },
     {
-      "CN_name": "カズサ(バンド)",
+      "CN_name": "和纱(乐队)",
       "CN_implementation": false,
       "Global_name": "Kazusa (Band)",
       "Global_implementation": false,
@@ -694,7 +808,7 @@ STATIC_DEFAULT_CONFIG = '''
     {
       "CN_name": "晴(露营)",
       "CN_implementation": false,
-      "Global_name": "Hare (Camping)",
+      "Global_name": "Hare (Camp)",
       "Global_implementation": false,
       "JP_name": "ハレ(キャンプ)",
       "JP_implementation": true
@@ -702,7 +816,7 @@ STATIC_DEFAULT_CONFIG = '''
     {
       "CN_name": "小玉(露营)",
       "CN_implementation": false,
-      "Global_name": "Kotama (Camping)",
+      "Global_name": "Kotama (Camp)",
       "Global_implementation": false,
       "JP_name": "コタマ(キャンプ)",
       "JP_implementation": true
@@ -719,7 +833,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "桔梗",
       "CN_implementation": false,
       "Global_name": "Kikyou",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "キキョウ",
       "JP_implementation": true
     },
@@ -727,7 +841,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "莲华",
       "CN_implementation": false,
       "Global_name": "Renge",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "レンゲ",
       "JP_implementation": true
     },
@@ -735,7 +849,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "紫草",
       "CN_implementation": false,
       "Global_name": "Yukari",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "ユカリ",
       "JP_implementation": true
     },
@@ -743,7 +857,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "佐天泪子",
       "CN_implementation": false,
       "Global_name": "Saten Ruiko",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "佐天涙子",
       "JP_implementation": true
     },
@@ -751,7 +865,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "食蜂操祈",
       "CN_implementation": false,
       "Global_name": "Shokuhou Misaki",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "食蜂操祈",
       "JP_implementation": true
     },
@@ -759,7 +873,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "御坂美琴",
       "CN_implementation": false,
       "Global_name": "Misaka Mikoto",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "御坂美琴",
       "JP_implementation": true
     },
@@ -1173,7 +1287,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "纱织",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Saori",
       "Global_implementation": true,
       "JP_name": "サオリ",
@@ -1237,7 +1351,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "亚津子",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Atsuko",
       "Global_implementation": true,
       "JP_name": "アツコ",
@@ -1245,7 +1359,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "日和",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Hiyori",
       "Global_implementation": true,
       "JP_name": "ヒヨリ",
@@ -1253,7 +1367,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "美咲",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Misaki",
       "Global_implementation": true,
       "JP_name": "ミサキ",
@@ -1445,7 +1559,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "初音未来",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Hatsune Miku",
       "Global_implementation": true,
       "JP_name": "初音ミク",
