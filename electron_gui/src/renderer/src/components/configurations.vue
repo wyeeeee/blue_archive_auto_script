@@ -10,10 +10,16 @@ import arenaPriority from './configurations/arenaPriority.vue'
 import createPriority from './configurations/createPriority.vue'
 import totalForceFightPriority from './configurations/totalForceFightPriority.vue'
 import sweepCountConfig from './configurations/sweepCountConfig.vue'
+
 const switchConfigs = ref(null);
 const eventConfig = ref(null);
+const staticConfig = ref(null);
+const config = ref(null);
+
 switchConfigs.value=JSON.parse(await window.api.config.getConfig('default_config',"switch"))
 eventConfig.value=JSON.parse(await window.api.config.getConfig('default_config',"event"))
+config.value=JSON.parse(await window.api.config.getConfig('default_config',"config"))
+staticConfig.value=JSON.parse(await window.api.config.getConfig('default_config',"static"))
 </script>
 
 <template>
@@ -36,7 +42,7 @@ eventConfig.value=JSON.parse(await window.api.config.getConfig('default_config',
         </v-expansion-panel-title>
         <v-expansion-panel-text>
             <featureSwitch :switchConfig="switchConfig" :event="eventConfig" v-if="switchConfig.config=='featureSwitch'"></featureSwitch>
-            <cafeInvite :switchConfig="switchConfig" v-else-if="switchConfig.config=='cafeInvite'"></cafeInvite>
+            <cafeInvite :switchConfig="switchConfig" :staticConfig="staticConfig" v-else-if="switchConfig.config=='cafeInvite'"></cafeInvite>
             <schedulePriority :switchConfig="switchConfig" v-else-if="switchConfig.config=='schedulePriority'"></schedulePriority>
             <shopPriority :switchConfig="switchConfig" v-else-if="switchConfig.config=='shopPriority'"></shopPriority>
             <arenaShopPriority :switchConfig="switchConfig" v-else-if="switchConfig.config=='arenaShopPriority'"></arenaShopPriority>
@@ -45,7 +51,6 @@ eventConfig.value=JSON.parse(await window.api.config.getConfig('default_config',
             <createPriority :switchConfig="switchConfig" v-else-if="switchConfig.config=='createPriority'"></createPriority>
             <totalForceFightPriority :switchConfig="switchConfig" v-else-if="switchConfig.config=='totalForceFightPriority'"></totalForceFightPriority>
             <sweepCountConfig :switchConfig="switchConfig" v-else-if="switchConfig.config=='sweepCountConfig'"></sweepCountConfig>
-            
         </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
