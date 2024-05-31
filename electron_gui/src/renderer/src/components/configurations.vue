@@ -1,16 +1,15 @@
 <script setup>
 import {ref} from 'vue';
-import featureSwitch from './configurations/featureSwitch.vue'
-import cafeInvite from './configurations/cafeInvite.vue'
-import schedulePriority from './configurations/schedulePriority.vue'
-import shopPriority from './configurations/shopPriority.vue'
-import arenaShopPriority from './configurations/arenaShopPriority.vue'
-import mainlinePriority from './configurations/mainlinePriority.vue'
-import arenaPriority from './configurations/arenaPriority.vue'
-import createPriority from './configurations/createPriority.vue'
-import totalForceFightPriority from './configurations/totalForceFightPriority.vue'
-import sweepCountConfig from './configurations/sweepCountConfig.vue'
-
+import featureSwitch from '@renderer/components/configurations/featureSwitch.vue'
+import cafeInvite from '@renderer/components/configurations/cafeInvite.vue'
+import schedulePriority from '@renderer/components/configurations/schedulePriority.vue'
+import shopPriority from '@renderer/components/configurations/shopPriority.vue'
+import arenaShopPriority from '@renderer/components/configurations/arenaShopPriority.vue'
+import mainlinePriority from '@renderer/components/configurations/mainlinePriority.vue'
+import arenaPriority from '@renderer/components/configurations/arenaPriority.vue'
+import createPriority from '@renderer/components/configurations/createPriority.vue'
+import totalForceFightPriority from '@renderer/components/configurations/totalForceFightPriority.vue'
+import sweepCountConfig from '@renderer/components/configurations/sweepCountConfig.vue'
 const switchConfigs = ref(null);
 const eventConfig = ref(null);
 const staticConfig = ref(null);

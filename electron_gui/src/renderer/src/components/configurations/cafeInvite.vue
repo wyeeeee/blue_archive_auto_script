@@ -1,11 +1,11 @@
 <script setup>
     import { ref } from 'vue'
+    import { useConfigStore } from '@renderer/stores/config'
     const props = defineProps({
     switchConfig: Object,
     config: Object,
     staticConfig: Object,
     })
-
 
     const cafeInvite = ref({
         cafe_reward_collect_hour_reward:{
