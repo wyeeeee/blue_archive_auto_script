@@ -1,15 +1,19 @@
 import fs from 'fs';
+import path from 'path';
 const configService = {
     name: 'config',
     fns: {
-        async getConfig(name,type) {
-
+        async getConfig(type,name=null) {
+          try{
+          if(type=='static'){
+            const data = fs.readFileSync(`../config/${type}.json`, 'utf8');
+            return data;
+          }
+        }catch{
+            return false;
+          }
             if (fs.existsSync(`../config/${name}`)) {
                 try{
-                  if(type=='static'){
-                    const data = fs.readFileSync(`../config/${type}.json`, 'utf8');
-                    return data;
-                  }
                     const data = fs.readFileSync(`../config/${name}/${type}.json`, 'utf8');
                     return data;
                 }catch{
@@ -18,7 +22,10 @@ const configService = {
               } else {
                 return false;
               }
-      } 
+      },
+      async getConfigName(){
+        return fs.readdirSync('../config').filter(file => fs.statSync(path.join('../config', file)).isDirectory())
+      }
     }
   };
   
