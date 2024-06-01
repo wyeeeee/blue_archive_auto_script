@@ -12,13 +12,13 @@ import sweepCountConfig from '@renderer/components/configurations/sweepCountConf
 import {ref} from 'vue'
 import { useConfigStore } from '@renderer/stores/config'
 const configStore = useConfigStore();
-configStore.getAllConfigs();
+await configStore.getAllConfigs();
 </script>
 
 <template>
     <div class="text-h3 ma-5 mb-0" style="text-align: center;font-weight: 800; font-style: italic;"><span style="color: #128afa;">功能</span><span>开关</span> </div>
-    <v-expansion-panels v-if="configStore.userConfig.default_config.switch!=null" variant="inset" elevation="5" color="#128afa" class="pa-10"> 
-        <v-expansion-panel v-for="switchConfig in configStore.userConfig.default_config.switch" >
+    <v-expansion-panels v-if="configStore.userConfig[configStore.guiConfig.selectedConfig]!=null" variant="inset" elevation="5" color="#128afa" class="pa-10"> 
+        <v-expansion-panel v-for="switchConfig in configStore.userConfig[configStore.guiConfig.selectedConfig].switch" >
         
         <v-expansion-panel-title>
             <v-card

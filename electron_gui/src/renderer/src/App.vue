@@ -2,8 +2,9 @@
 import appBar from './components/appBar.vue'
 import navigationDrawer from './components/navigationDrawer.vue'
 import { useRouter } from 'vue-router'
-const router = useRouter()
-const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+import { useConfigStore } from '@renderer/stores/config'
+const configStore = useConfigStore();
+const router = useRouter();
 router.push("/home")
 function changeDrawer(drawer) {
   router.push(drawer)

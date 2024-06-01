@@ -1,40 +1,36 @@
 <script setup>
-    import { ref } from 'vue'
-    import { useConfigStore } from '@renderer/stores/config'
-    const props = defineProps({
-    switchConfig: Object,
-    config: Object,
-    staticConfig: Object,
-    })
+import { ref } from 'vue'
+import { useConfigStore } from '@renderer/stores/config'
+const configStore = useConfigStore();
+configStore.getAllConfigs().then();
+const cafeInvite = ref({
+cafe_reward_collect_hour_reward:{
+        enable:false,
+        value:'是否要领取奖励',
+        type:'checkbox',
+        fun:()=>{
+            console.log('cafe_reward_collect_hour_reward')
+        }
+    },
+    cafe_reward_use_invitation_ticket:{
+        enable:false,
+        value:'是否使用邀请券',
+        type:'checkbox',
+        fun:()=>{
+            console.log('cafe_reward_collect_hour_reward')
+        }
+    },
+    cafe_reward_lowest_affection_first:{
+        enable:false,
+        value:'优先邀请好感等级低的学生',
+        type:'checkbox',
+        fun:()=>{
+            console.log('cafe_reward_collect_hour_reward')
+        }
+    },
 
-    const cafeInvite = ref({
-        cafe_reward_collect_hour_reward:{
-            enable:false,
-            value:'是否要领取奖励',
-            type:'checkbox',
-            fun:()=>{
-                console.log('cafe_reward_collect_hour_reward')
-            }
-        },
-        cafe_reward_use_invitation_ticket:{
-            enable:false,
-            value:'是否使用邀请券',
-            type:'checkbox',
-            fun:()=>{
-                console.log('cafe_reward_collect_hour_reward')
-            }
-        },
-        cafe_reward_lowest_affection_first:{
-            enable:false,
-            value:'优先邀请好感等级低的学生',
-            type:'checkbox',
-            fun:()=>{
-                console.log('cafe_reward_collect_hour_reward')
-            }
-        },
-
-    })
-    </script>
+})
+</script>
     
     <template>
         <template v-for="items in cafeInvite">
@@ -57,7 +53,7 @@
 
         </template>
         <v-divider></v-divider>
-        <v-select class="pt-5 pa-1" multiple variant="solo" :items="staticConfig.student_names" item-title="CN_name" label="选择你要添加邀请的学生">
+        <v-select class="pt-5 pa-1" multiple variant="solo" :items="configStore.staticConfig.student_names" item-title="CN_name" label="选择你要添加邀请的学生">
             <template v-slot:prepend-item>
                 <v-list-item
                   title="全选"
