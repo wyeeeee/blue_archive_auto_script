@@ -12,7 +12,7 @@ import sweepCountConfig from '@renderer/components/configurations/sweepCountConf
 import {ref} from 'vue'
 import { useConfigStore } from '@renderer/stores/config'
 const configStore = useConfigStore();
-await configStore.getAllConfigs();
+configStore.getAllConfigs().then();
 </script>
 
 <template>
