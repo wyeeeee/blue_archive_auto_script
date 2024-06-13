@@ -20,6 +20,10 @@ for (let i in regionName){
 </script>
     
     <template>
+      <v-sheet class="d-inline-flex align-center">
+        <v-switch color="primary" class="d-flex"></v-switch>
+        <div>优先做好感等级高的日程</div>
+      </v-sheet>
         <v-table>
             <thead>
               <tr>

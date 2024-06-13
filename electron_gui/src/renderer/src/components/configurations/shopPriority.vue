@@ -16,12 +16,15 @@ if(configStore.guiConfig.server=='官服'){
 </script>
     
 <template>
-    <template v-for="items in shopList">
-    <v-checkbox class="float-left" color="primary">
-        <template v-slot:label>
-          <div>{{items[0]}}
-          </div>
-        </template>
-      </v-checkbox>
-    </template>
+  <v-text-field label="刷新次数" density='compact' variant="outlined"  width="100" class="pt-2"></v-text-field>
+  <div>
+    <v-sheet class="d-inline-flex align-center pa-1"  v-for="items in shopList">
+      <v-checkbox-btn class="d-flex" color="primary"></v-checkbox-btn>
+      <div class="text-body-2">
+        {{items[0]}}<br>
+        {{items[1]}}  
+      </div>
+    </v-sheet>
+
+    </div>
 </template>

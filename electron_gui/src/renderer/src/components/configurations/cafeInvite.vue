@@ -75,19 +75,19 @@ watch(()=>cafeInvite.value.cafe_reward_have_second_cafe.enable,(newValue)=>{
         <template v-for="components in cafeInvite">
         <v-card variant="text" v-if="components.type == 'checkbox'">
             <v-card-text>
-              <div class="d-flex pa-1">
-                <v-checkbox-btn
-                  v-model="components.enable"
-                  color="primary"
-                  class="pe-2"
-                ></v-checkbox-btn>
-                <div class="text-h6">
+              <v-sheet class="d-inline-flex  align-center">
+                <v-switch
+                v-model="components.enable"
+                color="primary"
+                class="d-flex"
+              ></v-switch>
+                <div class="text-body-1">
                   {{ components.value}}
                 </div>
-              </div>
+              </v-sheet>
             </v-card-text>
           </v-card>
-          <v-select class="pt-5 pa-1" multiple variant="solo" v-if="components.type == 'selects' & components.show==true" :items="components.items" item-title="title" :label="components.value">
+          <v-select class="pt-2 pa-1" multiple variant="solo" v-if="components.type == 'selects' & components.show==true" :items="components.items" item-title="title" :label="components.value">
         </v-select>
         <v-divider></v-divider>
         </template>
