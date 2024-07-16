@@ -52,6 +52,7 @@ func_dict = {
     'explore_activity_challenge': module.explore_activity_challenge.implement,
     'explore_activity_mission': module.explore_activity_mission.implement,
     'dailyGameActivity': module.dailyGameActivity.implement,
+    'JP_server_mumu_login_fix': module.JP_server_mumu_login_fix.implement,
 }
 
 
@@ -412,6 +413,7 @@ class Baas_thread:
             'normal_task_skip-sweep-complete': (643, 506),
             "normal_task_charge-challenge-counts": (887, 164),
             "purchase_ap_notice": (919, 165),
+            "purchase_ap_notice-localized": (919, 165),
             "normal_task_task-operating-feature": (1000, 660),
             'normal_task_mission-operating-task-info': (1000, 664),
             'normal_task_mission-operating-task-info-notice': (416, 595),

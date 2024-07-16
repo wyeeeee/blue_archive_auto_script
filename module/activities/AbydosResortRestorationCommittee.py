@@ -13,6 +13,7 @@ def implement(self):
     if len(times) > 0:
         sweep(self, region, times)
     exchange_reward(self)
+    # jointTask(self)
     return True
 
 
@@ -61,7 +62,7 @@ def preprocess_activity_sweep_times(times):
 
 
 def get_stage_data():
-    module_path = 'src.explore_task_data.activities.anUnconcealedHeart'
+    module_path = 'src.explore_task_data.activities.AbydosResortRestorationCommittee'
     stage_module = importlib.import_module(module_path)
     stage_data = getattr(stage_module, 'stage_data', None)
     return stage_data
@@ -257,6 +258,7 @@ def to_activity(self, region, skip_first_screenshot=False, need_swipe=False):
         "plot_menu": (1205, 34),
         "plot_skip-plot-button": (1213, 116),
         'purchase_ap_notice': (919, 168),
+        'purchase_ap_notice-localized': (919, 168),
         "plot_skip-plot-notice": (766, 520),
         "normal_task_help": (1017, 131),
         "normal_task_task-info": task_info[self.server],
@@ -274,6 +276,10 @@ def to_activity(self, region, skip_first_screenshot=False, need_swipe=False):
         'normal_task_reward-acquired-confirm': (800, 660),
         'normal_task_mission-conclude-confirm': (1042, 671),
         "activity_exchange-confirm": (673, 603),
+        "activity_joint-task-boss-info": (916, 120),
+        "activity_joint-task-menu-task-info": (1157, 115),
+        "activity_joint-task-menu": (63, 40),
+        "activity_exchange-menu": (63, 40),
     }
     img_ends = "activity_menu"
     picture.co_detect(self, None, None, img_ends, img_possibles, skip_first_screenshot=skip_first_screenshot)
@@ -323,6 +329,7 @@ def to_mission_task_info(self, number):
         self.swipe(916, 483, 916, 219, duration=0.5, post_sleep_time=0.7)
     if number in [8, 9, 10, 11, 12]:
         self.swipe(943, 698, 943, 0, duration=0.1, post_sleep_time=0.7)
+        self.swipe(943, 698, 943, 0, duration=0.1, post_sleep_time=0.7)
     possibles = {'activity_menu': (1124, lo[index[number - 1]])}
     ends = "normal_task_task-info"
     image.detect(self, ends, possibles)
@@ -357,20 +364,16 @@ def to_formation_edit_i(self, i, lo=(0, 0), skip_first_screenshot=False):
 
 
 def start_sweep(self, skip_first_screenshot=False):
-    rgb_ends = [
-        "purchase_ap_notice",
-        "start_sweep_notice",
-    ]
-    rgb_possibles = {
-        "mission_info": (941, 411),
-    }
     img_ends = [
         "purchase_ap_notice",
+        "purchase_ap_notice-localized",
         "normal_task_start-sweep-notice",
     ]
-    img_possibles = {"normal_task_task-info": (941, 411)}
-    res = picture.co_detect(self, rgb_ends, rgb_possibles, img_ends, img_possibles, skip_first_screenshot)
-    if res == "purchase_ap_notice" or res == "buy_ap_notice":
+    img_possibles = {
+        "normal_task_task-info": (941, 411)
+    }
+    res = picture.co_detect(self, None, None, img_ends, img_possibles, skip_first_screenshot)
+    if res == "purchase_ap_notice-localized" or res == "purchase_ap_notice":
         return "inadequate_ap"
     rgb_ends = [
         "skip_sweep_complete",
@@ -384,8 +387,6 @@ def start_sweep(self, skip_first_screenshot=False):
     img_possibles = {"normal_task_start-sweep-notice": (765, 501)}
     picture.co_detect(self, rgb_ends, rgb_possibles, img_ends, img_possibles, skip_first_screenshot)
     return "sweep_complete"
-
-
 
 
 def exchange_reward(self):
@@ -453,3 +454,86 @@ def get_exchange_assets(self):
     }
     return self.ocr.get_region_num(self.latest_img_array, region[self.server], int, self.ratio)
 
+
+def jointTask(self):
+    to_activity(self, "story", True, False)
+    toJointTask(self, True)
+    tickets = getJointTaskTickets(self)
+    if tickets == "UNKNOWN":
+        self.logger.warning("joint task tickets: [ UNKNOWN ], assume [ 5, 5 ]")
+        tickets = [5, 5]
+    self.logger.info("joint task tickets: " + str(tickets))
+    for i in range(0, tickets[0]):
+        toJointTaskBossInfo(self)
+        toJointTaskTaskInfo(self, boss=1)
+        self.swipe(378, 403, 375, 493, duration=0.3, post_sleep_time=0.5)
+        self.click(375, 490, wait_over=True, duration=0.3)
+        startJointFight(self)
+        main_story.change_acc_auto(self)
+        toJointTask(self)
+
+
+def toJointTask(self, skip_first_screenshot=False):
+    img_possibles = {
+        "activity_menu": (103, 229),
+        'normal_task_prize-confirm': (776, 655),
+        'normal_task_fail-confirm': (643, 658),
+        'normal_task_task-finish': (1038, 662),
+        'normal_task_fight-confirm': (1168, 659),
+        "normal_task_sweep-complete": (643, 585),
+        "normal_task_start-sweep-notice": (887, 164),
+        'normal_task_skip-sweep-complete': (643, 506),
+        'normal_task_fight-complete-confirm': (1160, 666),
+        'normal_task_reward-acquired-confirm': (800, 660),
+        'normal_task_mission-conclude-confirm': (1042, 671),
+    }
+    img_ends = "activity_joint-task-menu"
+    picture.co_detect(self, None, None, img_ends, img_possibles, skip_first_screenshot)
+
+
+def toJointTaskBossInfo(self):
+    img_possibles = {
+        "activity_joint-task-menu": (853, 623),
+    }
+    img_ends = "activity_joint-task-boss-info"
+    picture.co_detect(self, None, None, img_ends, img_possibles, True)
+
+
+def getJointTaskTickets(self):
+    region = {
+        "CN": (177, 85, 216,116),
+        "JP": (177, 85, 216,116),
+        "Global": (177, 85, 216,116),
+    }
+    try:
+        ocr_res = self.ocr.get_region_res(self.latest_img_array, region[self.server], 'Global', self.ratio)
+        if ocr_res[1] == '1':
+            return [int(ocr_res[0]), int(ocr_res[2])]
+        for j in range(0, len(ocr_res)):
+            if ocr_res[j] == '/':
+                return [int(ocr_res[:j]), int(ocr_res[j + 1:])]
+        return "UNKNOWN"
+    except Exception as e:
+        self.logger.error("getJointTaskTickets error: " + str(e))
+        return "UNKNOWN"
+
+
+def toJointTaskTaskInfo(self, boss=1):
+    y = 260
+    if boss == 0:
+        y = 388
+    img_possibles = {
+        "activity_joint-task-boss-info": (851, y),
+    }
+    img_ends = "activity_joint-task-task-info"
+    picture.co_detect(self, None, None, img_ends, img_possibles, True)
+
+
+def startJointFight(self):
+    img_possibles = {
+        "activity_joint-task-task-info": (1021, 568),
+        "activity_joint-task-use-ticket-notice": (759, 500),
+    }
+    rgb_possibles = {"formation_edit1": (1156, 659)}
+    rgb_ends = "fighting_feature"
+    picture.co_detect(self, rgb_ends, rgb_possibles, None, img_possibles, True)

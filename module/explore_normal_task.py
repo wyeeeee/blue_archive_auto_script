@@ -42,7 +42,7 @@ def implement(self):
         for i in range(0, len(temp)):
             region = temp[i]
             self.logger.info("-- Start Pushing Region " + str(region) + " --")
-            if not 4 <= region <= 24:
+            if not 4 <= region <= 26:
                 self.logger.warning("Region not support")
                 continue
             choose_region(self, region)
@@ -169,7 +169,7 @@ def start_action(self, actions):
         if type(op) is str:
             op = [op]
         if 'p' in act:
-            if type(act['p']) is tuple:
+            if type(act['p']) is tuple or (len(act['p']) == 2 and type(act['p'][0]) is int):
                 act['p'] = [act['p']]
         skip_first_screenshot = False
         for j in range(0, len(op)):
@@ -476,11 +476,13 @@ def get_explore_normal_task_missions(self, st):
             st = st.split(',')
         print(type(st))
         tasks = []
+        min_area = 4
+        max_area = 26
         for i in range(0, len(st)):
             if '-' in st[i]:
                 temp = st[i].split('-')
                 region = int(temp[0])
-                if region < 4 or region > 25:
+                if region < min_area or region > max_area:
                     self.logger.error("region" + temp[0] + "not support")
                     continue
                 if len(temp) != 2:
@@ -488,7 +490,7 @@ def get_explore_normal_task_missions(self, st):
                 tasks.append([int(temp[0]), int(temp[1])])
             else:
                 region = int(st[i])
-                if region < 4 or region > 25:
+                if region < min_area or region > max_area:
                     self.logger.error("region" + st[i] + "not support")
                     continue
                 for j in range(1, 6):
@@ -515,6 +517,7 @@ def common_gird_method(self, current_task_stage_data):
     img_possibles = {
         'normal_task_help': (1017, 131),
         'normal_task_task-info': (946, 540),
+        'activity_task-info': (946, 540),
         "plot_menu": (1205, 34),
         "plot_skip-plot-button": (1213, 116),
         "plot_skip-plot-notice": (766, 520),

@@ -16,7 +16,7 @@ EVENT_DEFAULT_CONFIG = """
     "enabled": true,
     "priority": -1,
     "interval": 0,
-    "daily_reset": [[20, 0, 0]],
+    "daily_reset": [[6, 0, 0], [20, 0, 0]],
     "next_tick": 0,
     "event_name": "竞技场",
     "func_name": "arena",
@@ -317,6 +317,9 @@ DEFAULT_CONFIG = """
     "cafe_reward_has_no2_cafe": false,
     "cafe_reward_collect_hour_reward": true,
     "cafe_reward_use_invitation_ticket": true,
+    "cafe_reward_allow_duplicate_invite": false,
+    "cafe_reward_allow_exchange_student": false,
+    "cafe_reward_interaction_shot_delay": 1.0,
     "favorStudent1": [
         "爱丽丝"
     ],
@@ -643,12 +646,12 @@ STATIC_DEFAULT_CONFIG = '''
           ]
     },
     "current_game_activity": {
-        "CN": "AbydosResortRestorationCommittee",
+        "CN": "SweetSecretsAndGunfightsATaleOfAfterSchoolSweets",
         "Global": null,
-        "JP": null
+        "JP": "SummerSpecialOperationsRABBITPlatoonAndTheMysteryOfTheMissingShrimp"
     },
     "dailyGameActivity": {
-        "CN": "serikaSummerRamenStall",
+        "CN": null,
         "Global": null,
         "JP": null
     },
@@ -697,6 +700,46 @@ STATIC_DEFAULT_CONFIG = '''
         ["25-1", "遥香"] , ["25-2", "绫音"] , ["25-3", "纱绫(私服)"]
     ],
   "student_names": [
+    {
+      "CN_name": "モエ(水着)",
+      "CN_implementation": false,
+      "Global_name": "Moe (Swimsuit)",
+      "Global_implementation": false,
+      "JP_name": "モエ(水着)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "桐乃(泳装)",
+      "CN_implementation": false,
+      "Global_name": "Kirino (Swimsuit)",
+      "Global_implementation": false,
+      "JP_name": "キリノ(水着)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "吹雪(泳装)",
+      "CN_implementation": false,
+      "Global_name": "Fubuki (Swimsuit)",
+      "Global_implementation": false,
+      "JP_name": "フブキ(水着)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "叶渚(泳装)",
+      "CN_implementation": false,
+      "Global_name": "Kanna (Swimsuit)",
+      "Global_implementation": false,
+      "JP_name": "カンナ(水着)",
+      "JP_implementation": true
+    },
+    {
+      "CN_name": "芹香(泳装)",
+      "CN_implementation": false,
+      "Global_name": "Serika (Swimsuit)",
+      "Global_implementation": false,
+      "JP_name": "セリカ(水着)",
+      "JP_implementation": true
+    },
     {
       "CN_name": "绿(女仆)",
       "CN_implementation": false,
@@ -821,7 +864,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "晴(露营)",
       "CN_implementation": false,
       "Global_name": "Hare (Camp)",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "ハレ(キャンプ)",
       "JP_implementation": true
     },
@@ -829,7 +872,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "小玉(露营)",
       "CN_implementation": false,
       "Global_name": "Kotama (Camp)",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "コタマ(キャンプ)",
       "JP_implementation": true
     },
@@ -837,7 +880,7 @@ STATIC_DEFAULT_CONFIG = '''
       "CN_name": "艾米(泳装)",
       "CN_implementation": false,
       "Global_name": "Eimi (Swimsuit)",
-      "Global_implementation": false,
+      "Global_implementation": true,
       "JP_name": "エイミ(水着)",
       "JP_implementation": true
     },
@@ -1283,7 +1326,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "和纱",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Kazusa",
       "Global_implementation": true,
       "JP_name": "カズサ",
@@ -1307,7 +1350,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "千世(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Chise (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "チセ(水着)",
@@ -1315,7 +1358,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "泉奈(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Izuna (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "イズナ(水着)",
@@ -1323,7 +1366,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "静子(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Shizuko (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "シズコ(水着)",
@@ -1331,7 +1374,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "星野(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Hoshino (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "ホシノ(水着)",
@@ -1339,7 +1382,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "绫音(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Ayane (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "アヤネ(水着)",
@@ -1347,7 +1390,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "野宫(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Nonomi (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "ノノミ(水着)",
@@ -1355,7 +1398,7 @@ STATIC_DEFAULT_CONFIG = '''
     },
     {
       "CN_name": "若藻(泳装)",
-      "CN_implementation": false,
+      "CN_implementation": true,
       "Global_name": "Wakamo (Swimsuit)",
       "Global_implementation": true,
       "JP_name": "ワカモ(水着)",

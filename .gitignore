@@ -9,6 +9,8 @@
 !device_operation
 !.github
 !electronGUI
+!develop_tools
+
 !.editorconfig
 !.gitignore
 !ATX.apk

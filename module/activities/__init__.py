@@ -10,4 +10,6 @@ from module.activities import livelyAndJoyfulWalkingTour
 from module.activities import anUnconcealedHeart
 from module.activities import iveAlive
 from module.activities import AbydosResortRestorationCommittee
-
+from module.activities import SummerSkysWishes
+from module.activities import SweetSecretsAndGunfightsATaleOfAfterSchoolSweets
+from module.activities import SummerSpecialOperationsRABBITPlatoonAndTheMysteryOfTheMissingShrimp

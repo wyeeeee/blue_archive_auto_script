@@ -49,34 +49,31 @@ def implement(self):
                     self.click(1014, y, count=tar_times - 1, duration=duration, wait_over=True)
                 res = start_sweep(self, True)
                 if res == "sweep_complete" or res == "skip_sweep_complete":
-                    self.logger.info("hard task " + str(temp) + " finished")
+                    self.logger.info("Hard task " + str(temp) + " finished")
                 elif res == "inadequate_ap":
-                    self.logger.warning("INADEQUATE AP")
+                    self.logger.warning("Inadequate AP, Quit Sweep Hard Task")
                     return True
                 elif res == "charge_challenge_counts":
-                    self.logger.warning("Current Task Challenge Counts INSUFFICIENT")
+                    self.logger.warning("Current Task Challenge Counts Insufficient")
             elif t == "pass" or t == "no-pass":
-                self.logger.warning("AUTO SWEEP UNAVAILABLE")
+                self.logger.warning("Current Task [ " + str(tar_region) + str(tar_mission) + " ] Sweep Unavailable")
             self.config['unfinished_hard_tasks'].pop(0)
             self.config_set.set('unfinished_hard_tasks', self.config['unfinished_hard_tasks'])
             to_hard_event(self, True)
-        self.logger.info("hard task finished")
+        self.logger.info("Hard task All Finished")
     return True
 
+
 def to_hard_event(self, skip_first_screenshot=False):
-    task_info_x = {
-        'CN': 1087,
-        'Global': 1128,
-        'JP': 1128
+    task_info_lo = {
+        'CN': (1087, 140),
+        'Global': (1128, 140),
+        'JP': (1128, 130)
     }
     rgb_ends = 'event_hard'
     rgb_possibles = {
-        "sweep_complete": (1077, 98),
         "event_normal": (1064, 165),
         "main_page": (1198, 580),
-        "start_sweep_notice": (887, 164),
-        "charge_challenge_counts": (887, 161),
-        "unlock_notice": (887, 161),
         "level_up": (640, 200),
     }
     img_possibles = {
@@ -85,9 +82,10 @@ def to_hard_event(self, skip_first_screenshot=False):
         "normal_task_sweep-complete": (643, 585),
         "normal_task_start-sweep-notice": (887, 164),
         "normal_task_unlock-notice": (887, 164),
-        "normal_task_task-info": (task_info_x[self.server], 140),
+        "normal_task_task-info": task_info_lo[self.server],
         'normal_task_skip-sweep-complete': (643, 506),
-        "buy_ap_notice": (919, 165),
+        "purchase_ap_notice": (919, 165),
+        "purchase_ap_notice-localized": (919, 165),
         'normal_task_task-finish': (1038, 662),
         'normal_task_prize-confirm': (776, 655),
         'normal_task_fight-confirm': (1168, 659),
@@ -106,6 +104,7 @@ def to_task_info(self, x, y, skip_first_screenshot=False):
         "normal_task_task-info"
     ]
     return picture.co_detect(self, None, rgb_possibles, img_ends, None, skip_first_screenshot)
+
 
 def readOneHardTask(task_string):
     if task_string.count('-') != 2:
@@ -135,19 +134,15 @@ def readOneHardTask(task_string):
 
 
 def start_sweep(self, skip_first_screenshot=False):
-    rgb_ends = [
-        "purchase_ap_notice",
-        "start_sweep_notice",
-        "charge_challenge_counts"
-    ]
     img_ends = [
         "purchase_ap_notice",
+        "purchase_ap_notice-localized",
         "normal_task_start-sweep-notice",
         "normal_task_charge-challenge-counts",
     ]
     img_possibles = {"normal_task_task-info": (941, 411)}
-    res = picture.co_detect(self, rgb_ends, None, img_ends, img_possibles, skip_first_screenshot)
-    if res == "purchase_ap_notice":
+    res = picture.co_detect(self, None, None, img_ends, img_possibles, skip_first_screenshot)
+    if res == "purchase_ap_notice-localized" or res == "purchase_ap_notice":
         return "inadequate_ap"
     if res == "normal_task_charge-challenge-counts":
         return "charge_challenge_counts"
@@ -157,7 +152,7 @@ def start_sweep(self, skip_first_screenshot=False):
         "normal_task_sweep-complete",
     ]
     img_possibles = {"normal_task_start-sweep-notice": (765, 501)}
-    picture.co_detect(self, rgb_ends, rgb_possibles, img_ends, img_possibles, skip_first_screenshot)
+    picture.co_detect(self, None, rgb_possibles, img_ends, img_possibles, skip_first_screenshot)
     return "sweep_complete"
 
 
